@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.png
+build/
+dist/
+packaging/bin/*
+!packaging/bin/.gitkeep
+whisper.cpp/
+
+# local only: backups, Claude-project inbox (user data), dev maps, node deps
+.backup*/
+.backups/
+*.bak-*
+claude-projects/*
+!claude-projects/README.md
+dev-maps/
+node_modules/

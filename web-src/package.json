@@ -1,0 +1,17 @@
+{
+  "name": "transcapp-editor",
+  "private": true,
+  "description": "Source of web/vendor/editor.js. Run `npm install && npm run build` here after changing editor.js.",
+  "scripts": {
+    "build": "esbuild editor.js --bundle --format=iife --minify --target=es2020 --outfile=../web/vendor/editor.js && node copy-katex.js"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6",
+    "@codemirror/lang-markdown": "^6",
+    "@codemirror/language": "^6",
+    "@codemirror/state": "^6",
+    "@codemirror/view": "^6",
+    "katex": "^0.16"
+  },
+  "devDependencies": { "esbuild": "^0.25" }
+}

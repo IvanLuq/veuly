@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Veuly</title>
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="/app.css">
+<style>
+  /* Only the note, on white paper. This page is opened by the windowless browser that makes the PDF (transcapp/pdf.py). */
+  @page { size: A4; margin: 18mm 17mm; }
+  html, body { background: #fff; margin: 0; }
+  #note-view { max-width: none; font-size: 12.5pt; }
+  #note-view h1:first-child { margin-top: 0; }
+  #note-view h1, #note-view h2, #note-view h3 { break-after: avoid; }
+  #note-view img, #note-view table, #note-view pre, #note-view .math-block { break-inside: avoid; }
+  #note-view img { max-width: 100%; }
+</style>
+</head>
+<body>
+<div class="notes" id="note-view"></div>
+<script src="/i18n.js"></script>
+<script src="/vendor/editor.js"></script>
+<script src="/md.js"></script>
+<script src="/print.js"></script>
+</body>
+</html>

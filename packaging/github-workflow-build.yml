@@ -1,0 +1,61 @@
+# Builds the Mac and Windows installers. Runs on every tag like v0.2.0 (and on demand from the
+# Actions tab). A tag also publishes the files as a GitHub release.
+#
+# Not run yet: this file was written without access to GitHub runners. Expect to fix a step or two
+# on the first run. The installers are unsigned; see packaging/SIGNING.md.
+name: Build installers
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+env:
+  WHISPER_TAG: v1.7.6     # the whisper.cpp version to bundle; check it exists before the first run
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, macos-13, windows-latest]   # Apple silicon, Intel Mac, Windows
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest discover tests
+      - name: Build whisper-cli to ship inside the app
+        shell: bash
+        run: |
+          git clone --depth 1 --branch "$WHISPER_TAG" https://github.com/ggml-org/whisper.cpp
+          cmake -S whisper.cpp -B whisper.cpp/build -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DWHISPER_BUILD_TESTS=OFF
+          cmake --build whisper.cpp/build --config Release --target whisper-cli -j 3
+          mkdir -p packaging/bin
+          find whisper.cpp/build/bin -type f -name 'whisper-cli*' -exec cp {} packaging/bin/ \;
+          ls -l packaging/bin
+      - name: Inno Setup (Windows)
+        if: runner.os == 'Windows'
+        run: choco install innosetup -y --no-progress
+      - name: Build and check the app
+        run: |
+          pip install pyinstaller
+          python packaging/build.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Veuly-${{ matrix.os }}
+          path: |
+            dist/*.dmg
+            dist/Veuly-Setup.exe
+            dist/Veuly-windows.zip
+      - name: Publish on the release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.dmg
+            dist/Veuly-Setup.exe
+            dist/Veuly-windows.zip
+    permissions:
+      contents: write
