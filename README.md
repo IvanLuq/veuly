@@ -4,6 +4,8 @@ Record a class or a meeting, type your own notes while it goes on, and get one s
 The recording is transcribed on your computer (whisper.cpp) and deleted as soon as there is text: Veuly keeps no audio, only the transcript.
 No bot joins your call. The note is written by the AI you choose, with your own account.
 
+![A class's final note in Veuly: headings with the moment each topic started in the recording, formulas, a table, and the tabs for your own notes and the transcript](docs/screenshot.png)
+
 Version 0.10.0. Interface in English, Spanish and Catalan. Free and open source under the GNU GPL v3 (see [License](#license)).
 
 **Status.** Built and used by its author on a Mac (Apple silicon). Windows is built for but has never run on a real Windows PC;
@@ -966,6 +968,7 @@ notes folders hold only notes. The installers do not include this README or `CLA
 | `web/vendor/` | the built editor (CodeMirror 6 + KaTeX, MIT licence) and the KaTeX fonts |
 | `web-src/` | source of the editor; `npm install && npm run build` there rebuilds `web/vendor/editor.js` |
 | `packaging/` | builds the installable app (`build.py`), the Windows installer from any system (`build_windows.py`, `windows.nsi`), signing notes, the GitHub workflow |
+| `docs/` | the screenshot at the top of this file (a demo library, made with a stand-in engine) |
 | `tests/` | `python3 -m unittest discover tests`, a whole-app browser test, and browser tests of single parts (`e2e_*.py`) |
 | `CLAUDE.md` | for agents working on this code: where things are and the rules that are easy to break |
 
